@@ -1,0 +1,15 @@
+{
+    "sourceType": "Video",
+    "author": "SHAKER",
+    "name": "VegaMovies",
+    "version": 1,
+    "description": "Movies & TV Shows plugin for Umbrella - Scrapes vegamovies.mobile for latest movie downloads",
+    "homePageUrl": "https://vegamovies.mobile",
+    "iconUrl": "https://vegamovies.mobile/wp-content/uploads/2024/01/vegamovies-logo.png",
+    "manifestUrl": "http://YOUR_LOCAL_IP:5500/test/vegamovies/manifest.json",
+    "pluginUrl": "http://YOUR_LOCAL_IP:5500/dist/vegamovies-plugin.js",
+    "bannerImageUrl": "https://vegamovies.mobile/wp-content/uploads/2024/01/vegamovies-banner.png",
+    "changelog": "v1 - Initial release with search, categories, movie details, and multi-quality download links",
+    "readme": "VegaMovies plugin for Umbrella. Browse, search, and download movies & TV shows with multiple quality options from vegamovies.mobile.",
+    "license": "MIT"
+}

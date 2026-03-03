@@ -1,0 +1,15 @@
+{
+    "sourceType": "Video",
+    "author": "SHAKER",
+    "name": "AnimeVilla",
+    "version": 1,
+    "description": "Hindi Dubbed Anime plugin for Umbrella - Scrapes animevilla.in for latest Hindi dubbed anime content",
+    "homePageUrl": "https://animevilla.in",
+    "iconUrl": "https://animevilla.in/wp-content/uploads/2024/01/cropped-animevilla-logo-192x192.png",
+    "manifestUrl": "http://YOUR_LOCAL_IP:5500/test/animevilla/manifest.json",
+    "pluginUrl": "http://YOUR_LOCAL_IP:5500/dist/animevilla-plugin.js",
+    "bannerImageUrl": "https://animevilla.in/wp-content/uploads/2024/01/animevilla-banner.png",
+    "changelog": "v1 - Initial release with search, category browsing, home page, item details, and episode media support",
+    "readme": "AnimeVilla plugin for Umbrella. Browse, search, and watch Hindi dubbed anime from animevilla.in. Supports episode listing with download links.",
+    "license": "MIT"
+}

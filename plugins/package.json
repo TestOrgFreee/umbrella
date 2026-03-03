@@ -1,0 +1,15 @@
+{
+  "name": "umbrella-plugins",
+  "version": "1.0.0",
+  "description": "Umbrella media app plugins for AnimeVilla, VegaMovies, and MoviesMod",
+  "scripts": {
+    "build": "npx tsc",
+    "build:watch": "npx tsc --watch"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  },
+  "author": "SHAKER",
+  "license": "MIT"
+}

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VegaMovies - Umbrella Plugin</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 20px;
+            background: #0f0f23;
+            color: #eee;
+            text-align: center;
+        }
+
+        h1 {
+            color: #00d4ff;
+        }
+
+        .plugin-card {
+            background: #1a1a3e;
+            border-radius: 12px;
+            padding: 30px;
+            margin: 20px 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .install-btn {
+            display: inline-block;
+            background: #00d4ff;
+            color: #0f0f23;
+            padding: 15px 40px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 20px;
+            transition: background 0.3s;
+        }
+
+        .install-btn:hover {
+            background: #00b8d4;
+        }
+
+        .info {
+            color: #888;
+            font-size: 14px;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>🎬 VegaMovies Plugin</h1>
+    <div class="plugin-card">
+        <h2>Movies & TV Shows</h2>
+        <p>Browse, search, and download movies & TV shows from VegaMovies</p>
+        <p><strong>Features:</strong> Search, Categories, Multi-quality downloads (480p/720p/1080p)</p>
+        <a class="install-btn" href="umbrella://YOUR_LOCAL_IP:5500/test/vegamovies/manifest.json">
+            📥 Install Plugin
+        </a>
+        <p class="info">Opens in Umbrella app. Make sure the app is installed.</p>
+    </div>
+</body>
+
+</html>

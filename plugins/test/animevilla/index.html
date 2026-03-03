@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AnimeVilla - Umbrella Plugin</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 20px;
+            background: #1a1a2e;
+            color: #eee;
+            text-align: center;
+        }
+        h1 { color: #e94560; }
+        .plugin-card {
+            background: #16213e;
+            border-radius: 12px;
+            padding: 30px;
+            margin: 20px 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+        .install-btn {
+            display: inline-block;
+            background: #e94560;
+            color: white;
+            padding: 15px 40px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 20px;
+            transition: background 0.3s;
+        }
+        .install-btn:hover { background: #c73e54; }
+        .info { color: #888; font-size: 14px; margin-top: 15px; }
+    </style>
+</head>
+<body>
+    <h1>🎌 AnimeVilla Plugin</h1>
+    <div class="plugin-card">
+        <h2>Hindi Dubbed Anime</h2>
+        <p>Browse, search, and watch Hindi dubbed anime from AnimeVilla.in</p>
+        <p><strong>Features:</strong> Search, Genre browsing, Episode listing, Download links</p>
+        <a class="install-btn" href="umbrella://YOUR_LOCAL_IP:5500/test/animevilla/manifest.json">
+            📥 Install Plugin
+        </a>
+        <p class="info">Opens in Umbrella app. Make sure the app is installed.</p>
+    </div>
+</body>
+</html>
