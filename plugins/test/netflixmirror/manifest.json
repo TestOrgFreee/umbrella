@@ -1,0 +1,15 @@
+{
+    "sourceType": "Video",
+    "author": "SHAKER",
+    "name": "NetflixMirror",
+    "version": 1,
+    "description": "Netflix mirror content with streaming links",
+    "homePageUrl": "https://net22.cc",
+    "iconUrl": "",
+    "manifestUrl": "http://YOUR_LOCAL_IP:5500/plugins/test/netflixmirror/manifest.json",
+    "pluginUrl": "http://YOUR_LOCAL_IP:5500/plugins/dist/netflixmirror-plugin.js",
+    "bannerImageUrl": "",
+    "changelog": "v1 - Initial release with search, trending, streaming support",
+    "readme": "NetflixMirror plugin for Umbrella. Stream Netflix content via mirror sites.",
+    "license": "MIT"
+}

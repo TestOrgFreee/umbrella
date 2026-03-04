@@ -1,0 +1,26 @@
+﻿Testing AnimeVilla plugin...
+
+--- getHomeCategories ---
+getHomeCategories ERROR: getaddrinfo ENOTFOUND animevilla.in
+
+--- search("naruto") ---
+search ERROR: getaddrinfo ENOTFOUND animevilla.in
+
+--- getItemDetails("naruto-hindi-dubbed") ---
+Title: "Naruto
+					Naruto Hindi Dubbed (220)"
+Language: Hindi
+Synopsis length: 115
+Genres: 63
+Media: 46
+  First media: "S1 Episode 1-10						
+						
+															HSA DD" ΓåÆ https://hsalinks.eu.org/hsa.php?link=emxVTzNVMWVOZ1R0Vm1sSU1IMzQxSERkbVAvSTFlU3d
+
+--- getItemMedia("naruto-hindi-dubbed") ---
+Media links: 23
+  [0] "HSA DD" ΓåÆ https://hsalinks.eu.org/hsa.php?link=emxVTzNVMWVOZ1R0Vm1sSU1IMzQxSERkbVAvSTFlU3d
+  [1] "HSA DD" ΓåÆ https://hsalinks.eu.org/hsa.php?link=emxVTzNVMWVOZ1R0Vm1sSU1IMzQxSERkbVAvSTFlU3d
+  [2] "HSA DD" ΓåÆ https://hsalinks.eu.org/hsa.php?link=emxVTzNVMWVOZ1R0Vm1sSU1IMzQxSERkbVAvSTFlU3d
+  [3] "HSA DD" ΓåÆ https://hsalinks.eu.org/hsa.php?link=emxVTzNVMWVOZ1R0Vm1sSU1IMzQxRGxsWnAzMmNpVzV
+  [4] "HSA DD" ΓåÆ https://hsalinks.eu.org/hsa.php?link=emxVTzNVMWVOZ1R0Vm1sSU1IMzQxRGxsWnAzMmNpVzV

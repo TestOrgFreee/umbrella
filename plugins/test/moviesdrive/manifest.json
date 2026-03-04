@@ -1,0 +1,15 @@
+{
+    "sourceType": "Video",
+    "author": "SHAKER",
+    "name": "MoviesDrive",
+    "version": 1,
+    "description": "Movies and TV shows with drive download links from MoviesDrive",
+    "homePageUrl": "https://new1.moviesdrive.surf",
+    "iconUrl": "",
+    "manifestUrl": "http://YOUR_LOCAL_IP:5500/plugins/test/moviesdrive/manifest.json",
+    "pluginUrl": "http://YOUR_LOCAL_IP:5500/plugins/dist/moviesdrive-plugin.js",
+    "bannerImageUrl": "",
+    "changelog": "v1 - Initial release with search, categories, details, and drive download links",
+    "readme": "MoviesDrive plugin for Umbrella. Browse and download movies with GDrive/HubCloud links.",
+    "license": "MIT"
+}

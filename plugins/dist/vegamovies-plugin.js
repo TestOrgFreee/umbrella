@@ -14,7 +14,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 const https = require('https');
 const http = require('http');
 const url = require('url');
-const BASE_URL = 'https://vegamovies.mobile';
+const BASE_URL = 'https://vegamovies.cologne';
 // ─── Helper: Fetch HTML from a URL ───────────────────────────────────────────
 function fetchHTML(targetUrl) {
     return new Promise((resolve, reject) => {

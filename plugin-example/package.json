@@ -11,8 +11,5 @@
     "typescript": "^5.0.0"
   },
   "author": "SHAKER",
-  "license": "MIT",
-  "dependencies": {
-    "cheerio": "^1.2.0"
-  }
+  "license": "MIT"
 }

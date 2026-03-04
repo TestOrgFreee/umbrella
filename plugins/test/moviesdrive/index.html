@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AnimeVilla - Umbrella Plugin</title>
+    <title>MoviesDrive - Umbrella Plugin</title>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -14,18 +15,23 @@
             color: #eee;
             text-align: center;
         }
-        h1 { color: #e94560; }
+
+        h1 {
+            color: #48dbfb;
+        }
+
         .plugin-card {
             background: #16213e;
             border-radius: 12px;
             padding: 30px;
             margin: 20px 0;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
         }
+
         .install-btn {
             display: inline-block;
-            background: #e94560;
-            color: white;
+            background: #48dbfb;
+            color: #1a1a2e;
             padding: 15px 40px;
             border-radius: 8px;
             text-decoration: none;
@@ -34,20 +40,30 @@
             margin-top: 20px;
             transition: background 0.3s;
         }
-        .install-btn:hover { background: #c73e54; }
-        .info { color: #888; font-size: 14px; margin-top: 15px; }
+
+        .install-btn:hover {
+            background: #3bc9e8;
+        }
+
+        .info {
+            color: #888;
+            font-size: 14px;
+            margin-top: 15px;
+        }
     </style>
 </head>
+
 <body>
-    <h1>🎌 AnimeVilla Plugin</h1>
+    <h1>🎥 MoviesDrive Plugin</h1>
     <div class="plugin-card">
-        <h2>Hindi Dubbed Anime</h2>
-        <p>Browse, search, and watch Hindi dubbed anime from AnimeVilla.in</p>
-        <p><strong>Features:</strong> Search, Genre browsing, Episode listing, Download links</p>
-        <a class="install-btn" href="umbrella://192.168.1.3:5500/plugins/test/animevilla/manifest.json">
+        <h2>Movies & TV Shows</h2>
+        <p>Download movies and TV shows with Google Drive and HubCloud links</p>
+        <p><strong>Features:</strong> Search, Categories, Drive links, Multi-quality downloads</p>
+        <a class="install-btn" href="umbrella://YOUR_LOCAL_IP:5500/plugins/test/moviesdrive/manifest.json">
             📥 Install Plugin
         </a>
         <p class="info">Opens in Umbrella app. Make sure the app is installed.</p>
     </div>
 </body>
+
 </html>

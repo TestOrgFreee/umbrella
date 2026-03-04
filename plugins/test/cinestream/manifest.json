@@ -1,0 +1,15 @@
+{
+    "sourceType": "Video",
+    "author": "SHAKER",
+    "name": "CineStream",
+    "version": 1,
+    "description": "Multi-source streaming aggregator for movies and TV shows",
+    "homePageUrl": "https://multimovies.sarl",
+    "iconUrl": "",
+    "manifestUrl": "http://YOUR_LOCAL_IP:5500/plugins/test/cinestream/manifest.json",
+    "pluginUrl": "http://YOUR_LOCAL_IP:5500/plugins/dist/cinestream-plugin.js",
+    "bannerImageUrl": "",
+    "changelog": "v1 - Initial release with search, genre browsing, streaming support",
+    "readme": "CineStream plugin for Umbrella. Multi-source streaming aggregator with movies and TV shows.",
+    "license": "MIT"
+}
