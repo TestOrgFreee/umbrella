@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {Alert, Dimensions, StyleSheet, View} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Alert, Dimensions, StyleSheet, View } from 'react-native';
 import {
   Text,
   Button,
@@ -8,13 +8,26 @@ import {
   Portal,
   useTheme,
   TextInput,
+  List,
+  IconButton,
+  Divider,
 } from 'react-native-paper';
-import {usePluginStore} from '../state/usePluginStore';
+import { usePluginStore } from '../state/usePluginStore';
 import PluginList from '../components/PluginList';
 import ConfirmOrDenyDialog from '../../../../core/shared/components/dialogs/ConfirmOrDenyDialog';
-import {useInstallPluginDialogStore} from '../state/useInstallPluginDialogStore';
-import {PluginViewModel} from '../viewmodels/PluginsViewModel';
+import { useInstallPluginDialogStore } from '../state/useInstallPluginDialogStore';
+import { PluginViewModel } from '../viewmodels/PluginsViewModel';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useRepoStore } from '../state/useRepoStore';
 
+type RootStackParamList = {
+  repoPluginListView: { repoUrl: string };
+};
+
+// Smart Add Plugin Dialog
+// Accepts both single manifest URLs (.json) AND repository URLs
+// Auto-detects which type by trying to parse the response
 const AddPluginDialog = ({
   visible,
   onDismiss,
@@ -22,111 +35,119 @@ const AddPluginDialog = ({
   visible: boolean;
   onDismiss: () => void;
 }) => {
-  const [pluginManifestUrl, setPluginManifestUrl] = useState('');
-  const {
-    visible: installVisible,
-    setVisible: setInstallVisible,
-    plugin,
-    setPlugin,
-    loading,
-    setLoading,
-    setOnConfirm: setInstallOnConfirm,
-    setWaitingForPlugins,
-  } = useInstallPluginDialogStore(state => state);
-  const pluginViewModel = new PluginViewModel();
+  const [url, setUrl] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const handleInstallPlugin = async () => {
-    // Basic validation before proceeding
-    if (
-      !pluginManifestUrl.startsWith('http') ||
-      !pluginManifestUrl.endsWith('.json')
-    ) {
-      Alert.alert(
-        'Invalid URL',
-        'Please enter a valid plugin manifest URL that starts with "http" and ends with ".json".',
-      );
+  const {
+    setVisible: setInstallVisible,
+    setLoading: setInstallDialogLoading,
+    setPlugin,
+    setWaitingForPlugins,
+    setOnConfirm: setInstallOnConfirm,
+  } = useInstallPluginDialogStore(state => state);
+
+  const pluginViewModel = new PluginViewModel();
+  const navigation =
+    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+
+  const handleAdd = async () => {
+    if (!url.startsWith('http')) {
+      Alert.alert('Invalid URL', 'Please enter a URL starting with http:// or https://');
       return;
     }
 
-    setInstallVisible(true);
+    onDismiss();
     setLoading(true);
-    setWaitingForPlugins(true);
-    setPlugin(undefined);
 
-    await pluginViewModel.fetchManifest(pluginManifestUrl).then(result => {
-      switch (result.status) {
-        case 'success': {
-          setPlugin(result.data);
+    try {
+      // Fetch the URL and peek at what it is
+      const response = await fetch(url);
+      if (!response.ok) {
+        Alert.alert('Error', `Could not reach URL: ${response.statusText}`);
+        setLoading(false);
+        return;
+      }
+
+      const json = await response.json();
+
+      if (Array.isArray(json.plugins)) {
+        // ✅ It's a REPOSITORY — navigate to repo plugin list view
+        setLoading(false);
+        navigation.navigate('repoPluginListView', { repoUrl: url });
+      } else if (json.pluginUrl && json.name) {
+        // ✅ It's a single MANIFEST — use existing single-manifest flow
+        setInstallVisible(true);
+        setInstallDialogLoading(true);
+        setWaitingForPlugins(true);
+        setPlugin(undefined);
+
+        const manifestResult = await pluginViewModel.fetchManifest(url);
+        setInstallDialogLoading(false);
+
+        if (manifestResult.status === 'success') {
+          setPlugin(manifestResult.data);
           setWaitingForPlugins(false);
           setInstallVisible(true);
           setInstallOnConfirm(async () => {
-            await pluginViewModel
-              .fetchPlugin(result.data)
-              .then(result => {
-                switch (result.status) {
-                  case 'success': {
-                    Alert.alert(
-                      'Installation successful',
-                      `Plugin ${result.data.name} installed successfully`,
-                    );
-                    pluginViewModel.loadAllPluginsFromStorage();
-                    break;
-                  }
-                  case 'error': {
-                    Alert.alert(
-                      'Installation failed',
-                      `Plugin installation failed\n${result.error}`,
-                    );
-                    break;
-                  }
-                  default:
-                    break;
-                }
-              })
-              .catch(error => {
-                console.error('Error fetching plugin:', error);
-                Alert.alert(
-                  'Installation failed',
-                  `An unexpected error occurred during plugin fetch: ${
-                    error.message || error
-                  }`,
-                );
-              });
+            const fetchResult = await pluginViewModel.fetchPlugin(
+              manifestResult.data,
+            );
+            if (fetchResult.status === 'success') {
+              Alert.alert(
+                'Installed',
+                `${fetchResult.data.name} installed successfully`,
+              );
+              pluginViewModel.loadAllPluginsFromStorage();
+            } else {
+              Alert.alert('Installation failed', fetchResult.error ?? '');
+            }
           });
-          break;
+        } else {
+          setInstallVisible(false);
+          Alert.alert('Error', manifestResult.error ?? 'Failed to fetch manifest');
         }
-        case 'error': {
-          console.error(result.error);
-          break;
-        }
-        default:
-          break;
+      } else {
+        Alert.alert(
+          'Unknown format',
+          'The URL did not return a valid plugin manifest or repository.',
+        );
       }
-    });
-    setInstallVisible(true);
+    } catch (err: any) {
+      Alert.alert('Error', err.message ?? 'Could not load URL');
+    }
+
     setLoading(false);
   };
+
   return (
     <View>
       <Portal>
         <Dialog visible={visible} onDismiss={onDismiss}>
-          <Dialog.Title>Add Plugin</Dialog.Title>
+          <Dialog.Icon icon="package-variant-plus" />
+          <Dialog.Title style={{ textAlign: 'center' }}>Add Plugin or Repository</Dialog.Title>
           <Dialog.Content>
-            <Text variant="bodyMedium">The Url should end with .json</Text>
+            <Text variant="bodyMedium" style={{ marginBottom: 8, opacity: 0.7 }}>
+              Paste a single plugin manifest URL (.json) or a repository URL
+              (lists multiple plugins — like CloudStream).
+            </Text>
             <TextInput
-              label="Plugin URL"
-              value={pluginManifestUrl}
+              label="URL"
+              value={url}
               mode="outlined"
-              onChangeText={text => setPluginManifestUrl(text)}
+              autoCapitalize="none"
+              autoCorrect={false}
+              keyboardType="url"
+              placeholder="http://..."
+              onChangeText={text => setUrl(text)}
             />
           </Dialog.Content>
           <Dialog.Actions>
+            <Button onPress={onDismiss}>Cancel</Button>
             <Button
-              onPress={() => {
-                onDismiss();
-                handleInstallPlugin();
-              }}>
-              Done
+              loading={loading}
+              disabled={loading || !url}
+              onPress={handleAdd}>
+              Add
             </Button>
           </Dialog.Actions>
         </Dialog>
@@ -136,14 +157,16 @@ const AddPluginDialog = ({
 };
 
 const PluginListView = () => {
-  const {plugins} = usePluginStore(state => state);
-
-  const {deletePlugin, pluginToDelete, setPluginToDelete} = usePluginStore(
+  const { plugins } = usePluginStore(state => state);
+  const { deletePlugin, pluginToDelete, setPluginToDelete } = usePluginStore(
     state => state,
   );
+  const { repos, removeRepo } = useRepoStore(state => state);
   const [showAddPluginDialog, setShowAddPluginDialog] = useState(false);
-  useEffect(() => {}, [pluginToDelete]);
+  const navigation =
+    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
+  useEffect(() => { }, [pluginToDelete]);
   const theme = useTheme();
 
   return (
@@ -152,17 +175,79 @@ const PluginListView = () => {
         ...styles.container,
         backgroundColor: theme.colors.background,
       }}>
-      {plugins.length === 0 ? (
+      {/* Installed plugins */}
+      {plugins.length === 0 && repos.length === 0 ? (
         <View style={styles.noPlugins}>
-          <Text>Waiting for plugins to load</Text>
-          <View style={{height: 8}} />
-          <Text>¯\_( ͡° ͜ʖ ͡°)_/¯</Text>
+          <Text>No plugins installed yet</Text>
+          <View style={{ height: 8 }} />
+          <Text>Tap + to add a plugin or repository</Text>
         </View>
       ) : (
         <View style={styles.pluginList}>
-          <PluginList plugins={plugins} />
+          {/* Saved Repositories section */}
+          {repos.length > 0 && (
+            <List.Section>
+              <List.Subheader>Repositories</List.Subheader>
+              {repos.map(repo => (
+                <List.Item
+                  key={repo.url}
+                  title={repo.name}
+                  description={`by ${repo.author} • ${repo.pluginCount} plugins`}
+                  left={props => (
+                    <List.Icon {...props} icon="package-variant" />
+                  )}
+                  right={props => (
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                      <IconButton
+                        {...props}
+                        icon="open-in-new"
+                        onPress={() =>
+                          navigation.navigate('repoPluginListView', {
+                            repoUrl: repo.url,
+                          })
+                        }
+                      />
+                      <IconButton
+                        {...props}
+                        icon="trash-can"
+                        onPress={() => {
+                          Alert.alert(
+                            'Remove Repository',
+                            `Remove "${repo.name}" from your repository list?`,
+                            [
+                              { text: 'Cancel', style: 'cancel' },
+                              {
+                                text: 'Remove',
+                                style: 'destructive',
+                                onPress: () => removeRepo(repo.url),
+                              },
+                            ],
+                          );
+                        }}
+                      />
+                    </View>
+                  )}
+                  onPress={() =>
+                    navigation.navigate('repoPluginListView', {
+                      repoUrl: repo.url,
+                    })
+                  }
+                />
+              ))}
+              <Divider />
+            </List.Section>
+          )}
+
+          {/* Installed plugins */}
+          {plugins.length > 0 && (
+            <List.Section>
+              <List.Subheader>Installed Plugins</List.Subheader>
+              <PluginList plugins={plugins} />
+            </List.Section>
+          )}
         </View>
       )}
+
       {pluginToDelete && (
         <ConfirmOrDenyDialog
           visible={Boolean(pluginToDelete)}
@@ -175,6 +260,7 @@ const PluginListView = () => {
           reason="Are you sure you want to delete this plugin?"
         />
       )}
+
       <FAB
         icon="plus"
         mode="flat"

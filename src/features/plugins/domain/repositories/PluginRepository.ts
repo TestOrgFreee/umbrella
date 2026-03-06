@@ -5,7 +5,8 @@ import ExtractorAudio from '../../data/model/media/ExtractorAudio';
 import ExtractorVideo from '../../data/model/media/ExtractorVideo';
 import RawAudio from '../../data/model/media/RawAudio';
 import RawVideo from '../../data/model/media/RawVideo';
-import {Plugin} from '../entities/Plugin';
+import { Plugin } from '../entities/Plugin';
+import { PluginRepo } from '../entities/PluginRepo';
 
 // Plugin repository
 // This is the interface for the plugin repository
@@ -15,6 +16,7 @@ export interface PluginRepository {
   deletePlugin(manifest: Plugin): Promise<Status<void>>;
   fetchManifest(manifestUrl: string): Promise<Status<Plugin>>;
   fetchPlugin(manifest: Plugin): Promise<Status<Plugin>>;
+  fetchRepository(repoUrl: string): Promise<Status<PluginRepo>>;
   getPlugin(pluginPath: string): Plugin;
   getPlugins(): Plugin[];
   loadAllPluginsFromStorage(): Promise<Status<Plugin[]>>;

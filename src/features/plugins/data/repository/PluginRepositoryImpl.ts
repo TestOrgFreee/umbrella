@@ -1,10 +1,11 @@
 import Status from '../../../../core/shared/types/Status';
-import {Plugin} from '../../domain/entities/Plugin';
-import {PluginRepository} from '../../domain/repositories/PluginRepository';
-import {usePluginStore} from '../../presentation/state/usePluginStore';
+import { Plugin } from '../../domain/entities/Plugin';
+import { PluginRepo } from '../../domain/entities/PluginRepo';
+import { PluginRepository } from '../../domain/repositories/PluginRepository';
+import { usePluginStore } from '../../presentation/state/usePluginStore';
 import Category from '../model/item/Category';
 import DetailedItem from '../model/item/DetailedItem';
-import {PluginService} from '../datasource/PluginService';
+import { PluginService } from '../datasource/PluginService';
 import RawVideo from '../model/media/RawVideo';
 import RawAudio from '../model/media/RawAudio';
 import ExtractorVideo from '../model/media/ExtractorVideo';
@@ -27,8 +28,12 @@ export class PluginRepositoryImpl implements PluginRepository {
     return PluginService.fetchPlugin(manifest);
   }
 
+  async fetchRepository(repoUrl: string): Promise<Status<PluginRepo>> {
+    return PluginService.fetchRepository(repoUrl);
+  }
+
   getPlugin(path: string): Plugin {
-    const {getPlugin} = usePluginStore.getState();
+    const { getPlugin } = usePluginStore.getState();
     // this.plugins = plugins;
     const plugin = getPlugin(path);
     if (!plugin) {
@@ -38,7 +43,7 @@ export class PluginRepositoryImpl implements PluginRepository {
   }
 
   getPlugins(): Plugin[] {
-    const {getPlugins} = usePluginStore.getState();
+    const { getPlugins } = usePluginStore.getState();
     // this.plugins = plugins;
     return getPlugins();
   }
@@ -48,9 +53,9 @@ export class PluginRepositoryImpl implements PluginRepository {
   }
 
   async registerPlugin(plugin: Plugin): Promise<Status<void>> {
-    const {registerPlugin: registerPluginState} = usePluginStore.getState();
+    const { registerPlugin: registerPluginState } = usePluginStore.getState();
     registerPluginState(plugin);
-    return {status: 'success', data: undefined};
+    return { status: 'success', data: undefined };
   }
 
   async runPluginMethodInSandbox(

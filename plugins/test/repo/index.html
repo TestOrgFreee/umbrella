@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SHAKER's Plugin Repository</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 640px;
+            margin: 0 auto;
+            padding: 24px 16px;
+            background: #0d1117;
+            color: #e6edf3;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: #58a6ff;
+            margin-bottom: 4px;
+        }
+
+        .subtitle {
+            color: #8b949e;
+            font-size: 14px;
+            margin-bottom: 32px;
+        }
+
+        .repo-card {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 20px;
+        }
+
+        .repo-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #e6edf3;
+            margin-bottom: 6px;
+        }
+
+        .repo-meta {
+            color: #8b949e;
+            font-size: 13px;
+            margin-bottom: 16px;
+        }
+
+        .add-repo-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: #238636;
+            color: white;
+            padding: 14px 28px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            transition: background 0.2s;
+            width: 100%;
+        }
+
+        .add-repo-btn:hover {
+            background: #2ea043;
+        }
+
+        .info-text {
+            color: #8b949e;
+            font-size: 13px;
+            text-align: center;
+        }
+
+        .plugins-list {
+            margin-top: 24px;
+        }
+
+        .plugins-list h2 {
+            color: #8b949e;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 12px;
+        }
+
+        .plugin-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #21262d;
+            margin-bottom: 8px;
+            background: #0d1117;
+        }
+
+        .plugin-icon {
+            width: 36px;
+            height: 36px;
+            background: #21262d;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .plugin-info {
+            flex: 1;
+        }
+
+        .plugin-name {
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .plugin-desc {
+            color: #8b949e;
+            font-size: 12px;
+        }
+
+        .url-box {
+            font-size: 11px;
+            color: #58a6ff;
+            background: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            padding: 8px 12px;
+            word-break: break-all;
+            font-family: 'SFMono-Regular', Consolas, monospace;
+            margin-top: 16px;
+        }
+    </style>
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            // Auto-detect the server host so the deep link works without manual IP editing
+            const host = window.location.host; // e.g. 192.168.1.100:5500
+            const repoHttpUrl = `http://${host}/plugins/repository.json`;
+            const repoDeepLink = `umbrella://${host}/plugins/repository.json`;
+
+            // Update the deep link button
+            const addBtn = document.getElementById('add-repo-btn');
+            addBtn.href = repoDeepLink;
+
+            // Update the URL display box
+            const urlBox = document.getElementById('url-box');
+            urlBox.textContent = repoDeepLink;
+
+            // Update the HTTP URL info
+            const httpUrlEl = document.getElementById('http-url');
+            if (httpUrlEl) httpUrlEl.textContent = repoHttpUrl;
+
+            // Copy button
+            const copyBtn = document.getElementById('copy-btn');
+            copyBtn.addEventListener('click', () => {
+                navigator.clipboard.writeText(repoHttpUrl).then(() => {
+                    copyBtn.textContent = '✅ Copied!';
+                    setTimeout(() => { copyBtn.textContent = '📋 Copy HTTP URL'; }, 2000);
+                });
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <h1>📦 Plugin Repository</h1>
+    <p class="subtitle">SHAKER's collection of streaming plugins for Umbrella</p>
+
+    <div class="repo-card">
+        <div class="repo-title">SHAKER's Plugin Repository</div>
+        <div class="repo-meta">8 plugins • Movies, TV Shows &amp; Anime</div>
+
+        <a id="add-repo-btn" class="add-repo-btn" href="#">
+            📥 Add Repository to Umbrella
+        </a>
+        <p class="info-text">Tap the button to open Umbrella • then browse &amp; install plugins individually</p>
+
+        <div class="url-box" id="url-box">detecting host...</div>
+        <button id="copy-btn"
+            style="margin-top:12px; padding:8px 16px; border-radius:6px; border:1px solid #30363d; background:#21262d; color:#e6edf3; cursor:pointer; font-size:13px;">📋
+            Copy HTTP URL</button>
+    </div>
+
+    <div class="plugins-list">
+        <h2>Included Plugins</h2>
+        <div class="plugin-row">
+            <div class="plugin-icon">🎌</div>
+            <div class="plugin-info">
+                <div class="plugin-name">AnimeVilla</div>
+                <div class="plugin-desc">Hindi Dubbed Anime from AnimeVilla</div>
+            </div>
+        </div>
+        <div class="plugin-row">
+            <div class="plugin-icon">🎬</div>
+            <div class="plugin-info">
+                <div class="plugin-name">VegaMovies</div>
+                <div class="plugin-desc">Bollywood &amp; Hollywood Movies</div>
+            </div>
+        </div>
+        <div class="plugin-row">
+            <div class="plugin-icon">🎥</div>
+            <div class="plugin-info">
+                <div class="plugin-name">MoviesMod</div>
+                <div class="plugin-desc">Latest movies and TV shows</div>
+            </div>
+        </div>
+        <div class="plugin-row">
+            <div class="plugin-icon">🎞️</div>
+            <div class="plugin-info">
+                <div class="plugin-name">BollyFlix</div>
+                <div class="plugin-desc">Bollywood, Hollywood &amp; Anime</div>
+            </div>
+        </div>
+        <div class="plugin-row">
+            <div class="plugin-icon">☁️</div>
+            <div class="plugin-info">
+                <div class="plugin-name">MoviesDrive</div>
+                <div class="plugin-desc">Movies with Google Drive links</div>
+            </div>
+        </div>
+        <div class="plugin-row">
+            <div class="plugin-icon">📺</div>
+            <div class="plugin-info">
+                <div class="plugin-name">NetflixMirror</div>
+                <div class="plugin-desc">Netflix mirror streaming</div>
+            </div>
+        </div>
+        <div class="plugin-row">
+            <div class="plugin-icon">🎭</div>
+            <div class="plugin-info">
+                <div class="plugin-name">CineStream</div>
+                <div class="plugin-desc">Multi-source streaming</div>
+            </div>
+        </div>
+        <div class="plugin-row">
+            <div class="plugin-icon">🌄</div>
+            <div class="plugin-info">
+                <div class="plugin-name">SkyMoviesHD</div>
+                <div class="plugin-desc">Bollywood, Hollywood &amp; South Indian</div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

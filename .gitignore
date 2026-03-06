@@ -78,3 +78,9 @@ ref/
 logs/
 
 tmp
+
+# Plugin development artifacts
+plugins/test-results.txt
+plugins/debug-*
+plugins/animevilla-test-output.txt
+plugins/node_modules/

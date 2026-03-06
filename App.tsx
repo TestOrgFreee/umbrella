@@ -19,6 +19,7 @@ import DetailsNavigator from './src/features/details/DetailsNavigator';
 import { useProfileStore } from './src/features/profile/presentation/state/useProfileStore';
 import ProfileNavigator from './src/features/profile/ProfileNavigator';
 import PluginInfoView from './src/features/plugins/presentation/views/PluginInfoView';
+import RepoPluginListView from './src/features/plugins/presentation/views/RepoPluginListView';
 import { ExtractorService } from './src/data/services/extractor/data/datasource/ExtractorService';
 import MediaType from './src/features/plugins/data/model/media/MediaType';
 import ExtractorVideo from './src/features/plugins/data/model/media/ExtractorVideo';
@@ -146,14 +147,33 @@ export default function App() {
         return;
       }
       if (url.startsWith(constants.PLUGIN_SCHEME)) {
+        const resolvedUrl = url.replace(constants.PLUGIN_SCHEME, 'http://');
+
+        try {
+          // Peek at the URL to determine if it's a repo or single manifest
+          const peekResponse = await fetch(resolvedUrl);
+          const peekJson = await peekResponse.json();
+
+          if (Array.isArray(peekJson.plugins)) {
+            // ✅ Repository URL — navigate to repo plugin list view
+            if (isReadyRef.current && navigationRef.current) {
+              (navigationRef.current as any).navigate('repoPluginListView', {
+                repoUrl: resolvedUrl,
+              });
+            }
+            return;
+          }
+        } catch (_e) {
+          // Not JSON or fetch failed — fall through to single manifest
+        }
+
+        // Single manifest flow (existing behaviour)
         setInstallVisible(true);
         setLoading(true);
         setWaitingForPlugins(true);
         setPlugin(undefined);
 
-        const manifestUrl = url.replace(constants.PLUGIN_SCHEME, 'http://');
-
-        await pluginViewModel.fetchManifest(manifestUrl).then(result => {
+        await pluginViewModel.fetchManifest(resolvedUrl).then(result => {
           switch (result.status) {
             case 'success': {
               setPlugin(result.data);
@@ -187,8 +207,7 @@ export default function App() {
                     console.error('Error fetching plugin:', error);
                     Alert.alert(
                       'Installation failed',
-                      `An unexpected error occurred during plugin fetch: ${error.message || error
-                      }`,
+                      `An unexpected error occurred: ${error.message || error}`,
                     );
                   });
               });
@@ -296,6 +315,13 @@ export default function App() {
                 <Stack.Screen
                   name="pluginInfoView"
                   component={PluginInfoView}
+                  options={{
+                    headerShown: false,
+                  }}
+                />
+                <Stack.Screen
+                  name="repoPluginListView"
+                  component={RepoPluginListView}
                   options={{
                     headerShown: false,
                   }}

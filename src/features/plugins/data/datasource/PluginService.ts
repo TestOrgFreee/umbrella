@@ -1,12 +1,13 @@
 import Status from '../../../../core/shared/types/Status';
 import constants from '../../../../core/utils/constants';
-import {Plugin} from '../../domain/entities/Plugin';
-import {toSourceType} from '../model/source/SourceType';
+import { Plugin } from '../../domain/entities/Plugin';
+import { PluginRepo } from '../../domain/entities/PluginRepo';
+import { toSourceType } from '../model/source/SourceType';
 import * as RNFS from 'react-native-fs';
 import Category from '../model/item/Category';
 import DetailedItem from '../model/item/DetailedItem';
 import nodejs from 'nodejs-mobile-react-native';
-import {usePluginStore} from '../../presentation/state/usePluginStore';
+import { usePluginStore } from '../../presentation/state/usePluginStore';
 import RawAudio from '../model/media/RawAudio';
 import RawVideo from '../model/media/RawVideo';
 import ExtractorVideo from '../model/media/ExtractorVideo';
@@ -31,8 +32,7 @@ export const PluginService = {
       const manifestPath =
         RNFS.ExternalCachesDirectoryPath +
         `/${constants.APP_NAME}/` +
-        `${constants.PLUGIN_FOLDER_NAME}/${
-          manifestJson.author
+        `${constants.PLUGIN_FOLDER_NAME}/${manifestJson.author
         }_${manifestJson.name.split(' ').join('_')}.json`;
 
       if (
@@ -183,7 +183,7 @@ export const PluginService = {
       }
     }
 
-    const {setPlugins} = usePluginStore.getState();
+    const { setPlugins } = usePluginStore.getState();
 
     setPlugins(plugins);
 
@@ -206,7 +206,7 @@ export const PluginService = {
     >
   > {
     return new Promise(async (resolve, reject) => {
-      nodejs.channel.send(JSON.stringify({pluginPath, methodToRun, args}));
+      nodejs.channel.send(JSON.stringify({ pluginPath, methodToRun, args }));
       nodejs.channel.addListener('message', async (response: any) => {
         var responseJson;
         try {
@@ -217,7 +217,7 @@ export const PluginService = {
         } catch (error) {
           return;
         }
-        resolve({status: responseJson.status, data: responseJson.data});
+        resolve({ status: responseJson.status, data: responseJson.data });
       });
     }).then(value => {
       switch (methodToRun) {
@@ -241,5 +241,32 @@ export const PluginService = {
           };
       }
     });
+  },
+  async fetchRepository(repoUrl: string): Promise<Status<PluginRepo>> {
+    try {
+      const response = await fetch(repoUrl);
+      if (!response.ok) {
+        return {
+          status: 'error',
+          error: `Failed to fetch repository: ${response.statusText}`,
+        };
+      }
+      const repoJson = (await response.json()) as PluginRepo;
+      if (!repoJson.plugins || !Array.isArray(repoJson.plugins)) {
+        return {
+          status: 'error',
+          error: 'Invalid repository format: missing plugins array',
+        };
+      }
+      return {
+        status: 'success',
+        data: repoJson,
+      };
+    } catch (error: any) {
+      return {
+        status: 'error',
+        error: error.message || 'Failed to fetch repository',
+      };
+    }
   },
 };

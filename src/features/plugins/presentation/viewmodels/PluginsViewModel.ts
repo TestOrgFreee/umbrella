@@ -5,21 +5,24 @@ import ExtractorAudio from '../../data/model/media/ExtractorAudio';
 import ExtractorVideo from '../../data/model/media/ExtractorVideo';
 import RawAudio from '../../data/model/media/RawAudio';
 import RawVideo from '../../data/model/media/RawVideo';
-import {PluginRepositoryImpl} from '../../data/repository/PluginRepositoryImpl';
-import {Plugin} from '../../domain/entities/Plugin';
-import {PluginRepository} from '../../domain/repositories/PluginRepository';
-import {DeletePluginUsecase} from '../../domain/usecases/DeletePluginUsecase';
-import {FetchManifestUsecase} from '../../domain/usecases/FetchManifestUsecase';
-import {FetchPluginUsecase} from '../../domain/usecases/FetchPluginUsecase';
-import {GetPluginUsecase} from '../../domain/usecases/GetPluginUsecase';
-import {GetPluginsUsecase} from '../../domain/usecases/GetPluginsUsecase';
-import {LoadAllPluginsFromStorageUsecase} from '../../domain/usecases/LoadAllPluginsFromStorage';
-import {RegisterPluginUsecase} from '../../domain/usecases/RegisterPluginUsecase';
-import {RunPluginMethodInSandbox} from '../../domain/usecases/RunPluginMethodInSandbox';
+import { PluginRepositoryImpl } from '../../data/repository/PluginRepositoryImpl';
+import { Plugin } from '../../domain/entities/Plugin';
+import { PluginRepo } from '../../domain/entities/PluginRepo';
+import { PluginRepository } from '../../domain/repositories/PluginRepository';
+import { DeletePluginUsecase } from '../../domain/usecases/DeletePluginUsecase';
+import { FetchManifestUsecase } from '../../domain/usecases/FetchManifestUsecase';
+import { FetchPluginUsecase } from '../../domain/usecases/FetchPluginUsecase';
+import { FetchRepositoryUsecase } from '../../domain/usecases/FetchRepositoryUsecase';
+import { GetPluginUsecase } from '../../domain/usecases/GetPluginUsecase';
+import { GetPluginsUsecase } from '../../domain/usecases/GetPluginsUsecase';
+import { LoadAllPluginsFromStorageUsecase } from '../../domain/usecases/LoadAllPluginsFromStorage';
+import { RegisterPluginUsecase } from '../../domain/usecases/RegisterPluginUsecase';
+import { RunPluginMethodInSandbox } from '../../domain/usecases/RunPluginMethodInSandbox';
 
 const fetchManifest = new FetchManifestUsecase(new PluginRepositoryImpl());
 const deleteManifestFile = new DeletePluginUsecase(new PluginRepositoryImpl());
 const fetchPlugin = new FetchPluginUsecase(new PluginRepositoryImpl());
+const fetchRepository = new FetchRepositoryUsecase(new PluginRepositoryImpl());
 const getPlugin = new GetPluginUsecase(new PluginRepositoryImpl());
 const getPlugins = new GetPluginsUsecase(new PluginRepositoryImpl());
 const loadAllPluginsFromStorage = new LoadAllPluginsFromStorageUsecase(
@@ -42,6 +45,10 @@ export class PluginViewModel implements PluginRepository {
 
   async fetchPlugin(manifest: Plugin): Promise<Status<Plugin>> {
     return fetchPlugin.execute(manifest);
+  }
+
+  async fetchRepository(repoUrl: string): Promise<Status<PluginRepo>> {
+    return fetchRepository.execute(repoUrl);
   }
 
   getPlugin(pluginPath: string): Plugin {
